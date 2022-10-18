@@ -2,7 +2,7 @@ import os
 import secrets
 from dotenv import load_dotenv
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import Depends, status, HTTPException
 
 security = HTTPBasic()
 load_dotenv('.env')
