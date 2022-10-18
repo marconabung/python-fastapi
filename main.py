@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from configs.db import Base, engine
 
 app = FastAPI( # API Docs
-    title='PMS Backend API',
+    title='', # app name
     description='Powered by FastAPI',
     version='1.0.1',
     docs_url="/api/docs",

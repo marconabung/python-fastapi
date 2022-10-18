@@ -1,0 +1,14 @@
+*, *::before, *::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+input, input:hover, input:active, input:focus,
+select, select:active, select:focus {
+    border: none;
+    outline: none;
+    border-radius: 3pt;
+    padding: .5rem 1rem;
+    margin: .5rem;
+}
