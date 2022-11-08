@@ -1,8 +1,15 @@
-from fastapi import FastAPI, Depends
-from fastapi.security import HTTPBasicCredentials
+from fastapi import FastAPI, Request, Depends
+from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from models.tbl_users import User
+from controllers.templates import templates
+from controllers.oauth2 import get_current_user
 from configs.db import Base, engine
-from controllers.basic_auth import current_user
+import uvicorn
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI( # API Docs
     title='FastAPI', # app name
@@ -12,11 +19,24 @@ app = FastAPI( # API Docs
     redoc_url="/api/redocs",
 )
 
-Base.metadata.create_all(engine)
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+        
+    openapi_schema = get_openapi(
+        title="FastAPI Template OpenAPI",
+        version='1.0.1',
+        description="Custon OpenAPI schema",
+        routes=app.routes
+    )
 
-origins = ["*"] # WILDCARD ALL ACCESS
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
 
-app.add_middleware( # MIDDLEWARE CONFFIG
+app.openapi = custom_openapi
+
+origins = ["*"]
+app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
@@ -24,6 +44,15 @@ app.add_middleware( # MIDDLEWARE CONFFIG
     allow_headers=["*"],
 )
 
-@app.get("/test")
-def test_auth(credentials: HTTPBasicCredentials = Depends(current_user)):
-    return {"msg": "gumagana"}
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# CUSTOM ERROR HANDLER FOR FORBIDDEN AND NOT FOUND RESPONSES
+# @app.exception_handler(StarletteHTTPException)
+# async def custom_404_handler(request: Request, exc: StarletteHTTPException):
+#     if exc.status_code == 404:
+#         return templates.TemplateResponse("notfound.html", {"request": request, "logged": True})
+
+#     return templates.TemplateResponse("notfound.html", {"request": request, "logged": False})
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
