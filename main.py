@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi.security import HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from configs.db import Base, engine
+from controllers.basic_auth import current_user
 
 app = FastAPI( # API Docs
-    title='PMS Backend API',
+    title='FastAPI', # app name
     description='Powered by FastAPI',
     version='1.0.1',
     docs_url="/api/docs",
@@ -21,3 +23,7 @@ app.add_middleware( # MIDDLEWARE CONFFIG
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/test")
+def test_auth(credentials: HTTPBasicCredentials = Depends(current_user)):
+    return {"msg": "gumagana"}
