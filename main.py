@@ -6,6 +6,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from models.tbl_users import User
 from controllers.templates import templates
 from controllers.oauth2 import get_current_user
+from routers import auth, settings
 from configs.db import Base, engine
 import uvicorn
 
@@ -44,15 +45,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
+app.include_router(settings.router)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# CUSTOM ERROR HANDLER FOR FORBIDDEN AND NOT FOUND RESPONSES
-# @app.exception_handler(StarletteHTTPException)
-# async def custom_404_handler(request: Request, exc: StarletteHTTPException):
-#     if exc.status_code == 404:
-#         return templates.TemplateResponse("notfound.html", {"request": request, "logged": True})
+CUSTOM ERROR HANDLER FOR FORBIDDEN AND NOT FOUND RESPONSES
+@app.exception_handler(StarletteHTTPException)
+async def custom_404_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == 404:
+        return templates.TemplateResponse("notfound.html", {"request": request, "logged": True})
 
-#     return templates.TemplateResponse("notfound.html", {"request": request, "logged": False})
+    return templates.TemplateResponse("notfound.html", {"request": request, "logged": False})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
