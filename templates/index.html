@@ -8,8 +8,10 @@
     <title>FastAPI</title>
 </head>
 <body>
+    {% include 'components/header.html' %}
     {% block content %}
 
     {% endblock%}
-</body>
+    {% include 'components/footer.html' %}
+  </body>
 </html>

@@ -1,0 +1,93 @@
+:root {
+  --font-sm: 12px;
+  --font-md: 18px;
+  --font-lg: 24px;
+  
+  --layout-sm: 33.33%;
+  --layout-md: 66.66%;
+  --layout-max: 100%;
+
+  --display-sm: 3px;
+  --display-md: 6px;
+  --display-lg: 10px;
+
+  --color-light-main: white;
+  --color-light-main-cont: #010d27;
+  --color-dark-main: #010d27;
+  --color-dark-main-cont: white;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a,
+button,
+ul,
+ol,
+textarea,
+input,
+form,
+table,
+iframe,
+fieldset,
+select,
+picture,
+img,
+audio {
+  appearance: none;
+  -webkit-appearance: none;
+  -ms-progress-appearance: none;
+  -moz-appearance: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+img {
+  border: none;
+  max-width: 100%;
+}
+
+button {
+  outline: none;
+  border: none;
+}
+
+button:active {
+  transform: scale(.95);
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flex.flex-row {
+  flex-flow: row;
+}
+
+.flex.flex-column {
+  flex-flow: column;
+}
+
+.box-shadow-light {
+  -webkit-box-shadow: 0 0 var(--display-sm) var(--color-light-main);
+  box-shadow: 0 0 var(--display-sm) var(--color-light-main);
+}
+
+.box-shadow-dark {
+  -webkit-box-shadow: 0 0 var(--display-sm) var(--color-dark-main);
+  box-shadow: 0 0 var(--display-sm) var(--color-dark-main);
+}
